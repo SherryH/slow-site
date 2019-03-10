@@ -1,7 +1,18 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
+import './carousel.css';
 
 const Carousel = () => {
+  const carouselRef = React.createRef();
+  useEffect(() => {
+    console.log('carouselRef', carouselRef.current);
+    for (let i = 0; i < 200; i++) {
+      const box = document.createElement('div');
+      box.classList.add('box');
+      carouselRef.current.appendChild(box);
+    }
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -13,25 +24,28 @@ const Carousel = () => {
     cssEase: 'linear',
   };
   return (
-    <div>
+    <div ref={carouselRef}>
       <h2>Auto Play</h2>
       <Slider {...settings}>
         <div>
-          <h3>1</h3>
+          <img src="https://images.pexels.com/photos/1934259/pexels-photo-1934259.jpeg" alt="Italian Trulli" />
         </div>
         <div>
-          <h3>2</h3>
+          <img src="https://images.pexels.com/photos/290320/pexels-photo-290320.jpeg" alt="Italian Trulli" />
         </div>
         <div>
-          <h3>3</h3>
+          <img src="https://images.pexels.com/photos/1309778/pexels-photo-1309778.jpeg" alt="Italian Trulli" />
         </div>
         <div>
+          <img src="https://images.pexels.com/photos/631160/pexels-photo-631160.jpeg" alt="Italian Trulli" />
           <h3>4</h3>
         </div>
         <div>
+          <img src="https://images.pexels.com/photos/631160/pexels-photo-631160.jpeg" alt="Italian Trulli" />
           <h3>5</h3>
         </div>
         <div>
+          <img src="https://images.pexels.com/photos/631160/pexels-photo-631160.jpeg" alt="Italian Trulli" />
           <h3>6</h3>
         </div>
       </Slider>
