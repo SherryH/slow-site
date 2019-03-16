@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import OnVisible from 'react-on-visible';
+import { IdleQueue } from 'idlize/IdleQueue.mjs';
 import './carousel.css';
 
 const Carousel = () => {
   const carouselRef = React.createRef();
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
-    for (let i = 0; i < 200; i++) {
-      const box = document.createElement('div');
-      box.classList.add('box');
-      carouselRef.current.appendChild(box);
-    }
+    const queue = new IdleQueue();
+    // execute when idle
+    queue.pushTask(() => {
+      if (carouselRef.current) {
+        for (let i = 0; i < 200; i++) {
+          const box = document.createElement('div');
+          box.classList.add('box');
+          carouselRef.current.appendChild(box);
+        }
+      }
+    });
+    // set the visiblity to true when idle
+    queue.pushTask(() => {
+      setIsVisible(true);
+    });
   }, []);
 
   const settings = {
@@ -28,7 +39,7 @@ const Carousel = () => {
   return (
     <div ref={carouselRef}>
       <h2>Auto Play</h2>
-      <OnVisible onChange={(visible) => { console.log('visible', visible); setIsVisible(visible); console.log('isVisible', isVisible); }}>
+      <OnVisible onChange={(visible) => { console.log('visible', visible); setIsVisible(visible); }}>
 
         <Slider {...settings}>
           <div>
