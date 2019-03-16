@@ -1,28 +1,26 @@
-This repo contains the following basic setup for a React project. 
-Like Create-React-Apps, it allows you to scaffold a React project with only the dependencies listed in `package.json` by running one command.
-CSS loader and Style loader are not included because I like using css-in-js for styling. Feel free to customise for your own purpose.
+This is a slow website made of a few carousels and rubbish dom nodes creations.
 
-- Webpack 4
-- Babel 7
-- Eslint (Airbnb style)
-- Jest
+The purpose of the website is to investigate the performance improvement by implementing (Idle Until Urgent)[https://philipwalton.com/articles/idle-until-urgent/] pattern.
 
-# Usage
+To better capture the performance difference, I used the Performance tool on Chrome developer tool and set the Network to 'Fast 3G' and CPU to '4x Slowdown'.
 
-## Setup the script
+## Original
+Details saved in the profile `Profile-3Gslow-loadAll.json`.
+First Contentful Paint: roughly 6000ms
+onLoad event: roughly 7000ms
 
-1. Clone this template repo to local machine
-1. Create an alias on the shells config file e.g. `~/.bash_profile` or `~/.zshrc`
+## React OnVisible
+Code saved in the branch `onVisible-applied`
+Details saved in the profile `Profile-3GSlow-onVisible.json`.
+First Contentful Paint: roughly 5000ms
+onLoad event: roughly 6600ms
 
-```
-alias create-react='bash {PATH_TO_REPO}/create-react-template.sh'
-```
+Some improvement was observed as only 3 carousels are rendered on the first load. The rest of the carousels are rendered when they are scrolled into view.
 
-3. Restart terminal
+## IdleQueue + React OnVisible
+Code saved in the branch `Idlize-applied`
+Details saved in the profile `Profile-3GSlow-IdleQueue.json`.
+First Contentful Paint: less than 1000ms
+onLoad event: roughly 1000ms
 
-## Create a new React repo
-
-4. Create a new project folder on your desired path
-5. `cd` inside the new project folder
-6. Run `create-react new-project "Project Title"`
-   Substitude `new-project` with your npm project name and `Project Title` with the desired title on index.html
+Lots of improvement was seen because both rendering of the component and the creation of rubbish dom nodes are delayed until idle or when in view.
