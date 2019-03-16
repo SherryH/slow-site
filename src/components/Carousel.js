@@ -9,6 +9,10 @@ const Carousel = () => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     const queue = new IdleQueue();
+    // set the visiblity to true when idle
+    queue.pushTask(() => {
+      setIsVisible(true);
+    });
     // execute when idle
     queue.pushTask(() => {
       if (carouselRef.current) {
@@ -18,10 +22,6 @@ const Carousel = () => {
           carouselRef.current.appendChild(box);
         }
       }
-    });
-    // set the visiblity to true when idle
-    queue.pushTask(() => {
-      setIsVisible(true);
     });
   }, []);
 
